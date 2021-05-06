@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useState, } from 'react'
 import { Form, Input, Button, Container } from './style'
+import { useHistory } from 'react-router-dom'
+import { registerSchema } from '../../validation/registraion'
+
+require('dotenv').config()
 
 const Sign = () => {
+    
+    const history = useHistory()
 
-    useEffect(()=>{
+    useEffect(() => {
         document.title = "Register"
     })
 
@@ -24,16 +29,42 @@ const Sign = () => {
         })
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
         const newInput = {
             username: input.username,
             password: input.password
         }
-        console.log(newInput)
-        if (input.confirm === '' || input.password === '' || input.username === ''){
-            alert('fill all detail')
+        const isValid = await registerSchema.isValid(newInput)
+
+        if (isValid === false) {
+            // handle form validation
+            alert('not valid data')
+        } else {
+            // handle form API
+            const result = await fetch(process.env.REACT_APP_URL_REG, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'Application/json'
+                },
+                body: JSON.stringify({
+                    newInput
+                })
+            }).then(res => res.json())
+            if (result.status === 'ok') {
+                setInput({
+                    username: '',
+                    password: '',
+                    confirm: ''
+                })
+                history.push('/login')
+            } else {
+                alert('Someting went wrong.' + result.error)
+            }
         }
+
+
+
     }
 
     return (
@@ -63,12 +94,14 @@ const Sign = () => {
                 />
                 <Button
                     type="submit"
-                    onClick={handleSubmit}>
+                    onClick={handleSubmit}
+                    disabled={input.confirm === '' || input.password.length === '' || input.username.length === ''}>
                     Submit
                 </Button>
             </Form>
         </Container>
     )
 }
+
 
 export default Sign

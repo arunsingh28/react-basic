@@ -45,3 +45,12 @@ export const Button = style.button`
         background : palevioletred;
     }
 `
+
+
+export const Error = style.div`
+    color : red;
+    align-self : end;
+    font-size : 12px;
+    margin-left : 5px;
+
+`
