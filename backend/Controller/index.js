@@ -46,7 +46,6 @@ app.post('/login', async (req, res) => {
     const username = newData.username
     const password = newData.password
 
-
     if (!username || typeof username !== 'string') {
         return res.json({ status: 'error', error: 'Invalid password/username' })
     }

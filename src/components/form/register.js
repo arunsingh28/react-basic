@@ -13,6 +13,7 @@ const Sign = () => {
         document.title = "Register"
     })
 
+
     const [input, setInput] = useState({
         username: '',
         password: '',
@@ -42,7 +43,7 @@ const Sign = () => {
             alert('not valid data')
         } else {
             // handle form API
-            const result = await fetch(process.env.REACT_APP_URL_REG, {
+            const result = await fetch(process.env.REACT_APP_URL+'/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'Application/json'
@@ -52,6 +53,7 @@ const Sign = () => {
                 })
             }).then(res => res.json())
             if (result.status === 'ok') {
+                alert('Account Created.')
                 setInput({
                     username: '',
                     password: '',

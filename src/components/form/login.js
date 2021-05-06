@@ -48,7 +48,10 @@ const Login = () => {
                     username: '',
                     password: ''
                 })
-                
+                localStorage.setItem('token',{
+                    login : true,
+                    token : result.data
+                })
                 alert('Login successfull')
                 history.push('/')
             } else {
