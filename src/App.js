@@ -1,11 +1,14 @@
 import React from 'react'
+import Sign from './components/form/index'
+
 
 const App = () => {
     return (
         <div>
-            Hello worlds
+            <Sign/>
         </div>
     )
 }
+
 
 export default App
