@@ -59,6 +59,10 @@ const Sign = () => {
                 })
                 history.push('/login')
             } else {
+                setInput({
+                    username: '',
+                    password: ''
+                })
                 alert('Someting went wrong.' + result.error)
             }
         }

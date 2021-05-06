@@ -1,5 +1,5 @@
 const express = require('express')
-const JWT = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
 const app = express.Router()
@@ -18,7 +18,7 @@ app.post('/register', async (req, res) => {
     const plainText = newInput.password
 
     if (!username || typeof username !== 'string') {
-        return res.json({ status: 'error', error: 'Invalid password' })
+        return res.json({ status: 'error', error: 'Invalid password/username' })
     }
     if (!plainText || typeof plainText !== 'string') {
         return res.json({ status: 'error', error: 'Invalid password' })
@@ -37,6 +37,40 @@ app.post('/register', async (req, res) => {
         }
     }
     res.json({ status: 'ok' })
+})
+
+
+app.post('/login', async (req, res) => {
+    const { newData } = req.body;
+
+    const username = newData.username
+    const password = newData.password
+
+
+    if (!username || typeof username !== 'string') {
+        return res.json({ status: 'error', error: 'Invalid password/username' })
+    }
+    if (!password || typeof password !== 'string') {
+        return res.json({ status: 'error', error: 'Invalid password' })
+    }
+
+    const user = await _user.findOne({ username }).lean()
+
+    if (!user) {
+        return res.json({ status: 'error', error: 'invalid Username/password' })
+    }
+    if (await bcrypt.compare(password, user.password)) {
+        const token = jwt.sign(
+            {
+                id: user._id,
+                username: user.username
+            },
+            process.env.JWT_SERCET
+        )
+        return res.json({status : 'ok', data : token })
+    }
+    res.json({ status : 'error' , error : 'invalid username/password' })
+
 })
 
 

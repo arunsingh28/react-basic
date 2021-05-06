@@ -1,34 +1,64 @@
 import React, { useEffect, useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { Form, Container, Button, Input } from './style'
 
 const Login = () => {
 
-    useEffect(()=>{
+    const history = useHistory()
+
+    useEffect(() => {
         document.title = "Login"
     })
- 
+
     const [input, setInput] = useState({
         username: '',
         password: '',
     })
 
-    const handleData =(e)=>{
-        const {name,value} = e.target
+    const handleData = (e) => {
+        const { name, value } = e.target
         setInput(preVal => {
-            return{
+            return {
                 ...preVal,
-                [name] : value
+                [name]: value
             }
         })
     }
 
-    const handleForm =(e)=>{
+    const handleForm = async (e) => {
         e.preventDefault()
         const newData = {
-            password : input.password,
-            username : input.username
+            password: input.password,
+            username: input.username
         }
-        console.log(JSON.stringify(newData))
+        if (input.username === '' || input.password === '') {
+            alert('fill all detail')
+        } else {
+            const result = await fetch(process.env.REACT_APP_URL + '/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newData
+                })
+            }).then(res => res.json())
+            if (result.status === 'ok') {
+                setInput({
+                    username: '',
+                    password: ''
+                })
+                
+                alert('Login successfull')
+                history.push('/')
+            } else {
+                setInput({
+                    username: '',
+                    password: ''
+                })
+                alert(result.error)
+            }
+        }
     }
 
     return (
@@ -36,12 +66,14 @@ const Login = () => {
             <Form>
                 <p>Login</p>
                 <Input
+                    type="text"
                     name="username"
                     value={input.username}
                     placeholder="Enter username"
                     onChange={handleData}
                 />
                 <Input
+                    type="password"
                     name="password"
                     value={input.password}
                     placeholder="Enter password"
