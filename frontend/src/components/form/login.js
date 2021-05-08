@@ -4,11 +4,11 @@ import { Form, Container, Button, Input } from './style'
 
 const Login = () => {
 
-    const history = useHistory()
-
     useEffect(() => {
         document.title = "Login"
     })
+
+    const history = useHistory()
 
     const [input, setInput] = useState({
         username: '',
@@ -43,15 +43,13 @@ const Login = () => {
                     newData
                 })
             }).then(res => res.json())
+            
             if (result.status === 'ok') {
                 setInput({
                     username: '',
                     password: ''
                 })
-                localStorage.setItem('token',{
-                    login : true,
-                    token : result.data
-                })
+                localStorage.setItem('token',result.token)
                 alert('Login successfull')
                 history.push('/')
             } else {

@@ -1,24 +1,41 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
+
+
 const Admin = () => {
 
+    const [data,setData] = useState()
+
     useEffect(() => {
+       (async function(){
         document.title = 'Admin'
-    })
+           try{
+                const result = fetch(process.env.REACT_APP_URL + '/admin', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: localStorage.getItem("token")
+                    })
+                }).then(res => console.log(res.json()))
+                setData(result)
+           }
+           catch(e){
+            console.log(e)
+           }
+       })()
+    },[])
 
-    const [login, setLogin] = useState(false)
+    console.log(data)
 
 
-   
 
-    if(login === false){
-        return <Redirect to="/login"></Redirect>
-    }
 
 
     return (
         <div>
-            
+            {/* { result.data.username } */}
         </div>
     )
 }
