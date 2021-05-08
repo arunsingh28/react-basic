@@ -53,6 +53,7 @@ app.post('/login', async (req, res) => {
         return res.json({ status: 'error', error: 'Invalid password' })
     }
 
+
     const user = await _user.findOne({ username }).lean()
 
     if (!user) {
@@ -66,10 +67,26 @@ app.post('/login', async (req, res) => {
             },
             process.env.JWT_SERCET
         )
-        return res.json({status : 'ok', data : token })
+        return res.json({ status: 'ok', token })
     }
-    res.json({ status : 'error' , error : 'invalid username/password' })
+    res.json({ status: 'error', error: 'invalid username/password' })
 
+})
+
+
+
+app.post('/admin', async (req, res) => {
+    const { token } = req.body
+    try {
+        const user = await jwt.verify(token, process.env.JWT_SERCET)
+        const _id = user.id
+        const userData = await _user.findOne({ _id }).lean()
+        console.log(userData)
+        return res.json({ status : 'ok', data : userData })
+    } catch (error) {
+        console.log(error)
+        return res.json({ status: 'error', error: 'Signature error' })
+    }
 })
 
 
