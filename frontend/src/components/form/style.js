@@ -54,3 +54,14 @@ export const Error = style.div`
     margin-left : 5px;
 
 `
+
+export const Box = style.div`
+    background : #eee;
+    height : 80px;
+    width : 300px;
+    display : flex;
+    align-items : center;
+    padding : 0px 10px;
+    border-radius : 10px;
+    box-shadow : 0px 0px 20px 10px rgba(0,0,0,0.1)
+`

@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { Redirect } from 'react-router-dom'
+
 
 
 const Admin = () => {
 
-    const [data,setData] = useState()
+    const [data, setData] = useState()
 
     useEffect(() => {
-       (async function(){
-        document.title = 'Admin'
-           try{
+        (async function () {
+            document.title = 'Admin'
+            try {
                 const result = fetch(process.env.REACT_APP_URL + '/admin', {
                     method: 'POST',
                     headers: {
@@ -20,12 +20,12 @@ const Admin = () => {
                     })
                 }).then(res => console.log(res.json()))
                 setData(result)
-           }
-           catch(e){
-            console.log(e)
-           }
-       })()
-    },[])
+            }
+            catch (e) {
+                console.log(e)
+            }
+        })()
+    }, [])
 
     console.log(data)
 

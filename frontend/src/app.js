@@ -8,6 +8,7 @@ import Navbar from './components/navbar/index'
 import Admin from './components/admin/index'
 
 import './style.css'
+import UpDown from './components/upDown'
 
 const App = () => {
 
@@ -20,6 +21,7 @@ const App = () => {
                 <Route component={Admin} path="/" exact></Route>
                 <Route component={Login} path="/login" exact></Route>
                 <Route component={Regsiter} path="/register" exact></Route>
+                <Route component={UpDown} path="/counter" exact></Route>
             </div>
         </BrowserRouter>
     )
