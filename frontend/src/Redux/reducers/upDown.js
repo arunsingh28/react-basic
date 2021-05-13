@@ -1,5 +1,5 @@
-// action or logic
 const intialState = 0
+
 const changeTheNumber = (state = intialState, action) => {
     switch (action.type) {
 
@@ -14,15 +14,6 @@ const changeTheNumber = (state = intialState, action) => {
                 state - 1
             )
         }
-
-
-        // for storing user data
-        case "ADD": {
-            return (
-                action.payload
-            )
-        }
-        
 
         default: return state
     }

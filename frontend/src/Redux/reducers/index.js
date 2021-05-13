@@ -1,4 +1,6 @@
 import changeTheNumber from './upDown'
+import userData  from './user.js'
+
 
 import { combineReducers } from 'redux'
 
@@ -8,7 +10,8 @@ import { combineReducers } from 'redux'
 // if any new reducer make it will import to this file and add to combineReducers funciton...
 
 const rootReducer = combineReducers({
-    changeTheNumber
+    changeTheNumber,
+    userData
 })
 
 export default rootReducer

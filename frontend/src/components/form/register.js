@@ -2,8 +2,7 @@ import React, { useEffect, useState, } from 'react'
 import { Form, Input, Button, Container } from './style'
 import { useHistory } from 'react-router-dom'
 import { registerSchema } from '../../validation/registraion'
-import { useDispatch } from 'react-redux'
-import { incNumber } from '../../Redux/actions/index'
+
 
 require('dotenv').config()
 
@@ -11,8 +10,6 @@ const Sign = () => {
 
     const history = useHistory()
 
-    // for dispatching data to store 
-    const dispatch = useDispatch()
 
     useEffect(() => {
         document.title = "Register"
@@ -109,9 +106,6 @@ const Sign = () => {
                     disabled={input.confirm === '' || input.password.length === '' || input.username.length === ''}>
                     Submit
                 </Button>
-                <Button type="button"
-                onClick={()=> dispatch(incNumber(10)) }
-                >+</Button>
             </Form>
            
         </Container>

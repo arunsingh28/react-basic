@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react'
-
-
+import React, { useEffect } from 'react'
+import { useDispatch,useSelector } from 'react-redux'
+import { userAdd } from '../../Redux/actions/index'
+// import  userData from '../../Redux/reducers/user'
 
 const Admin = () => {
+    const dispatch = useDispatch()
+    
+    const user = useSelector((state)=>state.userData)
 
-    const [data, setData] = useState()
+    console.log("user from admi file "+JSON.stringify(user))
 
     useEffect(() => {
         (async function () {
-            document.title = 'Admin'
+            document.title = user ? 'Admin' : user.data.username
             try {
-                const result = fetch(process.env.REACT_APP_URL + '/admin', {
+                fetch(process.env.REACT_APP_URL + '/admin', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -18,16 +22,16 @@ const Admin = () => {
                     body: JSON.stringify({
                         token: localStorage.getItem("token")
                     })
-                }).then(res => console.log(res.json()))
-                setData(result)
+                }).then(res => res.json())
+                .then(all => dispatch(userAdd(all)))
             }
             catch (e) {
                 console.log(e)
             }
         })()
-    }, [])
+    }, [document.title])
 
-    console.log(data)
+
 
 
 
@@ -35,7 +39,13 @@ const Admin = () => {
 
     return (
         <div>
-            {/* { result.data.username } */}
+            Hello 
+
+            <div>
+            {
+                user ? 'No data found please login to view resource.' : user.data.username
+            }
+            </div>
         </div>
     )
 }
