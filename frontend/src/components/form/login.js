@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import { Form, Container, Button, Input } from './style'
-
+import { useDispatch } from 'react-redux'
+import { userAdd } from '../../Redux/actions/index'
 const Login = () => {
 
     useEffect(() => {
@@ -9,6 +10,8 @@ const Login = () => {
     })
 
     const history = useHistory()
+    
+    const dispatch = useDispatch()
 
     const [input, setInput] = useState({
         username: '',
@@ -44,12 +47,16 @@ const Login = () => {
                 })
             }).then(res => res.json())
             
+            
             if (result.status === 'ok') {
                 setInput({
                     username: '',
                     password: ''
                 })
                 localStorage.setItem('token',result.token)
+                
+                dispatch(userAdd(result))
+
                 alert('Login successfull')
                 history.push('/')
             } else {

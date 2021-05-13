@@ -12,13 +12,24 @@
 export const incNumber = (num) => {
     return {
         type: "INCREMENT",
-        payload : num
+        payload: num
     }
 }
 
+
 // if code is of one line then write like this
-export const decNumber = () => { 
+export const decNumber = () => {
     return {
-        type : "DECREMENT"
+        type: "DECREMENT"
     }
- }
+}
+
+
+// for storing user data
+
+export const userAdd = (user) => {
+    return {
+        type : "ADD",
+        payload : user
+    }
+}
