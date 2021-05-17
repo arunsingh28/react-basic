@@ -15,6 +15,7 @@ const _user = require('../Model/user')
 
 app.post('/register', async (req, res) => {
     const { newInput } = req.body;
+    console.log(req.body)
     const username = newInput.username
     const plainText = newInput.password
     const city = newInput.city
@@ -33,18 +34,25 @@ app.post('/register', async (req, res) => {
     const password = await bcrypt.hash(plainText, 10)
 
     try {
-        const response = await _user.create({
+        const user = await _user.create({
             username, password, city, Name
-        }).then(user => {
-            res.json({
-                user: {
-                    id: user.id,
-                    name: user.Name,
-                    email: user.email,
-                    city : user.city,
-                    username : user.username
-                }
-            })
+        })
+        const token = jwt.sign(
+            {
+                id: user._id,
+            },
+            process.env.JWT_SERCET,
+            // expire token in 2 hour
+            { expiresIn : 3600 }
+        )
+        return res.json({
+            status: 'ok',
+            token,
+            user: {
+                username: user.username,
+                city : user.city,
+                name : user.Name,
+            }
         })
     } catch (error) {
         // for unique user in DB
@@ -54,7 +62,6 @@ app.post('/register', async (req, res) => {
             throw error
         }
     }
-    res.json({ status: 'ok' })
 })
 
 
@@ -78,14 +85,14 @@ app.post('/login', async (req, res) => {
         return res.json({ status: 'error', error: 'invalid Username/password' })
     }
     if (await bcrypt.compare(password, user.password)) {
-        const token = jwt.sign(
-            {
-                id: user._id,
-                username: user.username
-            },
-            process.env.JWT_SERCET
-        )
-        return res.json({ status: 'ok', token })
+        // const token = jwt.sign(
+        //     {
+        //         id: user._id,
+        //         username: user.username
+        //     },
+        //     process.env.JWT_SERCET
+        // )
+        // return res.json({ status: 'ok', token })
     }
     res.json({ status: 'error', error: 'invalid username/password' })
 

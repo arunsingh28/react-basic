@@ -58,6 +58,9 @@ const Sign = () => {
                     newInput
                 })
             }).then(res => res.json())
+            
+            console.log(result)
+
             if (result.status === 'ok') {
                 alert('Account Created.')
                 setInput({
@@ -68,14 +71,15 @@ const Sign = () => {
                     city: '',
                 })
                 history.push('/login')
-            } else {
-                setInput({
-                    username: '',
-                    password: '',
-                    confirm: '',
-                    Name: '',
-                    city: '',
-                })
+            } 
+            else {
+                // setInput({
+                //     username: '',
+                //     password: '',
+                //     confirm: '',
+                //     Name: '',
+                //     city: '',
+                // })
                 alert('Someting went wrong.' + result.error)
             }
         }
