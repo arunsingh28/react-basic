@@ -30,7 +30,7 @@ const Login = () => {
         if (input.username === '' || input.password === '') {
             alert('fill all detail')
         } else {
-            const result = await fetch(process.env.REACT_APP_URL + '/login', {
+            const result = await fetch(process.env.REACT_APP_URL + '/auth/v1', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -39,6 +39,7 @@ const Login = () => {
                     newData
                 })
             }).then(res => res.json())
+            console.log(result)
             if (result.status === 'ok') {
                 setInput({
                     username: '',

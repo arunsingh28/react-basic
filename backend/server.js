@@ -26,6 +26,6 @@ mongoose.connect(process.env.URI, { useUnifiedTopology: true, useNewUrlParser: t
 
 
 app.use('/API', require('./Controller/index'))
-
+app.use('/API/auth', require('./config/auth'))
 // server listing
 app.listen(port, console.log(`server is up on port : ${port}`))
