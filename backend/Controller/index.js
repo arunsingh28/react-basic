@@ -2,6 +2,8 @@ const express = require('express')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
 
+const auth = require('../middleware/auth')
+
 const app = express.Router()
 
 
@@ -43,15 +45,15 @@ app.post('/register', async (req, res) => {
             },
             process.env.JWT_SERCET,
             // expire token in 2 hour
-            { expiresIn : 3600 }
+            { expiresIn: 3600 }
         )
         return res.json({
             status: 'ok',
             token,
             user: {
                 username: user.username,
-                city : user.city,
-                name : user.Name,
+                city: user.city,
+                name: user.Name,
             }
         })
     } catch (error) {
@@ -99,17 +101,16 @@ app.post('/login', async (req, res) => {
 })
 
 
+// @route    POST /register
+// @desc     for creating new user
+// @access   public
 
-app.post('/admin', async (req, res) => {
-    const { token } = req.body
+app.get('/user', auth, async (req, res) => {
     try {
-        const user = await jwt.verify(token, process.env.JWT_SERCET)
-        const _id = user.id
-        const userData = await _user.findOne({ _id }).lean()
-        return res.json({ status: 'ok', data: userData })
+       await _user.findById(req.user.id).select('-password') 
+       .then(user => res.json(user))
     } catch (error) {
-        console.log(error)
-        return res.json({ status: 'error', error: 'Signature error' })
+        throw error
     }
 })
 
