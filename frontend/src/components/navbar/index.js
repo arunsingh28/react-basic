@@ -16,7 +16,7 @@ const Navbar = () => {
             <Link to="/"><Brand>Workspace</Brand></Link>
             <Left>
                 {
-                    myState ? <Islogout/> : <IsLogin/>  
+                    auth ? <Islogout/> : <IsLogin/>  
                }
                 <Link to="/counter"><Button>Counter</Button></Link>
             </Left>

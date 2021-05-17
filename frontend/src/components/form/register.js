@@ -19,7 +19,9 @@ const Sign = () => {
     const [input, setInput] = useState({
         username: '',
         password: '',
-        confirm: ''
+        confirm: '',
+        city: '',
+        Name: ''
     })
 
     const handleData = (e) => {
@@ -36,7 +38,9 @@ const Sign = () => {
         e.preventDefault()
         const newInput = {
             username: input.username,
-            password: input.password
+            password: input.password,
+            city: input.city,
+            Name: input.Name
         }
         const isValid = await registerSchema.isValid(newInput)
 
@@ -45,7 +49,7 @@ const Sign = () => {
             alert('not valid data')
         } else {
             // handle form API
-            const result = await fetch(process.env.REACT_APP_URL+'/register', {
+            const result = await fetch(process.env.REACT_APP_URL + '/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'Application/json'
@@ -59,13 +63,18 @@ const Sign = () => {
                 setInput({
                     username: '',
                     password: '',
-                    confirm: ''
+                    confirm: '',
+                    Name: '',
+                    city: '',
                 })
                 history.push('/login')
             } else {
                 setInput({
                     username: '',
-                    password: ''
+                    password: '',
+                    confirm: '',
+                    Name: '',
+                    city: '',
                 })
                 alert('Someting went wrong.' + result.error)
             }
@@ -87,6 +96,13 @@ const Sign = () => {
                     value={input.username}
                 />
                 <Input
+                    type="text"
+                    name="Name"
+                    value={input.Name}
+                    placeholder="Enter Full Name"
+                    onChange={handleData}
+                />
+                <Input
                     type="password"
                     placeholder="Enter Password"
                     name="password"
@@ -100,6 +116,13 @@ const Sign = () => {
                     placeholder="Enter confirm password"
                     onChange={handleData}
                 />
+                <Input
+                    type="text"
+                    name="city"
+                    value={input.city}
+                    placeholder="Enter City"
+                    onChange={handleData}
+                />
                 <Button
                     type="submit"
                     onClick={handleSubmit}
@@ -107,7 +130,7 @@ const Sign = () => {
                     Submit
                 </Button>
             </Form>
-           
+
         </Container>
     )
 }

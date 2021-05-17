@@ -12,7 +12,7 @@ const Admin = () => {
 
     useEffect(() => {
         (async function () {
-            document.title = user ? 'Admin' : user.data.username
+            // document.title = user ? user.data.username : 'Admin' 
             try {
                 fetch(process.env.REACT_APP_URL + '/admin', {
                     method: 'POST',
@@ -32,20 +32,9 @@ const Admin = () => {
     }, [document.title])
 
 
-
-
-
-
-
     return (
         <div>
             Hello 
-
-            <div>
-            {
-                user ? 'No data found please login to view resource.' : user.data.username
-            }
-            </div>
         </div>
     )
 }

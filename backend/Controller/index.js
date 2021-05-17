@@ -6,16 +6,23 @@ const app = express.Router()
 
 
 // user modal
-
 const _user = require('../Model/user')
 
 
-
+// @route    POST /register
+// @desc     for creating new user
+// @access   public
 
 app.post('/register', async (req, res) => {
     const { newInput } = req.body;
     const username = newInput.username
     const plainText = newInput.password
+    const city = newInput.city
+    const Name = newInput.Name
+
+    if (!username || !plainText || !Name || !city) {
+        return res.json({ status: 'error', error: 'Invalid Inputs' })
+    }
 
     if (!username || typeof username !== 'string') {
         return res.json({ status: 'error', error: 'Invalid password/username' })
@@ -27,9 +34,20 @@ app.post('/register', async (req, res) => {
 
     try {
         const response = await _user.create({
-            username, password
+            username, password, city, Name
+        }).then(user => {
+            res.json({
+                user: {
+                    id: user.id,
+                    name: user.Name,
+                    email: user.email,
+                    city : user.city,
+                    username : user.username
+                }
+            })
         })
     } catch (error) {
+        // for unique user in DB
         if (error.code === 11000) {
             return res.json({ status: 'error', error: 'Username already in use' })
         } else {
@@ -81,8 +99,7 @@ app.post('/admin', async (req, res) => {
         const user = await jwt.verify(token, process.env.JWT_SERCET)
         const _id = user.id
         const userData = await _user.findOne({ _id }).lean()
-        console.log(userData)
-        return res.json({ status : 'ok', data : userData })
+        return res.json({ status: 'ok', data: userData })
     } catch (error) {
         console.log(error)
         return res.json({ status: 'error', error: 'Signature error' })
