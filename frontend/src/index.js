@@ -5,10 +5,11 @@ import App from './app.js'
 import store from './Redux/store'
 import { Provider } from 'react-redux'
 
-store.subscribe(() => console.log("from Root file "+store.getState()))
+import { loadUser } from './Redux/actions/authAction'
+
 
 ReactDOM.render(
     <Provider store={store}>
         <App />
     </Provider>
-, document.getElementById('root'))
+    , document.getElementById('root'))
